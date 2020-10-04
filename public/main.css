@@ -1,0 +1,29 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 04, 2020
+    Author     : Zack
+*/
+
+table, th, td{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td{
+    padding: 5px;
+}
+
+#div1{
+    padding: 10px;
+}
+
+.button{
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: lightskyblue;
+
+}
