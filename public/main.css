@@ -8,12 +8,11 @@ and open the template in the editor.
     Author     : Zack
 */
 
-table, th, td{
-    border: 1px solid black;
-    border-collapse: collapse;
-}
+
 th, td{
-    padding: 5px;
+    padding: 2px;
+    width:300px;
+    text-align: center;
 }
 
 #div1{
@@ -32,4 +31,124 @@ th, td{
     padding: 10px;
     text-align: center;
     background: #000066;
+}
+
+
+
+#gameClock{
+    font-family: "Arial Black";
+    font-size: 30px;
+    display: inline;
+}
+
+input[type="text"]{
+  font-family: "Arial Black";
+  text-align: center;
+  font-size: 2rem;
+  padding: 4px;
+  border-radius: 4px;
+  display: inline;
+  max-width: 3rem;
+  vertical-align: middle;
+  
+}
+
+#clockHeader{
+  font-family: "Arial Black";
+  font-size: 30px;
+}
+
+.timeInput{
+  font-size: 50px;
+}
+
+#clockTable{
+  font-family: "Arial Black";
+  font-size: 30px;
+  display: table;
+  border-collapse: collapse;
+  max-width: 500px;
+}
+
+#clockCol{
+  width: 33.3333%;
+}
+
+
+.startButton {
+    background-color: #4CAF50; /* Green */
+    border: 1px solid green;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    float: left;
+    border-radius: 4px;
+    display: inline;
+    width: 100%;
+  }
+
+.stopButton {
+    background-color: red;
+    border: 1px solid rgb(160, 0, 0);
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    float: left;
+    border-radius: 4px;
+    display: inline;
+    width: 100%;
+  }
+
+  .timeButton {
+    background-color: #4d4c4c; 
+    border: 1px solid rgb(49, 49, 49);
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    display: inline;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: inline;
+    vertical-align: middle;
+    width: 100%;
+  }
+  
+  .resetButton {
+    background-color: yellow;
+    border: 1px solid rgb(175, 175, 0);
+    color: darkslategray;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    float: left;
+    border-radius: 4px;
+    width: 100%;
+  }
+  
+.startButton:hover {
+    background-color: #3e8e41;
+}
+
+.stopButton:hover {
+    background-color: #861919;
+}
+
+.resetButton:hover {
+  background-color: rgb(153, 153, 0);
+}
+
+input:invalid {
+  border: red solid 5px;
 }
