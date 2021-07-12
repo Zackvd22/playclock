@@ -14,8 +14,9 @@ var   IO        = require('socket.io');  // include socket.io module for socket.
 const EXPRESS   = require('express')     // include express module for serving up webpages
 const HTTP      = require('http')        // include http module to set up express as an http server.
 var Timer       = require('easytimer.js').Timer;
+var ledstrip    = require('rpi-ws281x');
 
-
+// handle express init
 const HTTP_PORT = 80;
 var expressApp = EXPRESS();
 var httpServer = HTTP.createServer(expressApp);
@@ -25,6 +26,50 @@ var httpServer = HTTP.createServer(expressApp);
 var gameClock = new Timer({callback: gameClockUpdate,countdown : true, startValues: {'minutes': 10, 'seconds': 0}});
 var playClock = new Timer({callback: playClockUpdate,countdown : true, startValues: {'minutes': 0, 'seconds': 40}});
 var practiceTimer = new Timer({callback: practiceTimerUpdate,countup : true});
+
+// Handle all of led init
+const NUM_PIXELS = 602;
+
+ledstrip.configure({leds:NUM_PIXELS});
+var pixelData = new Uint32Array(NUM_PIXELS);
+
+const RED = (255<<8);
+
+// LED number lookup table
+var numOne = new Uint32Array(146);
+numOne = numOne.fill(RED,42,84);
+
+var numZero = new Uint32Array(146);
+numZero = numZero.fill(RED,0,126);
+
+var numTwo = new Uint32Array(146);
+numTwo = numTwo.fill(RED,21,63).fill(RED,84);
+
+var numThree = new Uint32Array(146);
+numThree = numThree.fill(RED,21,105).fill(RED,126);
+
+var numFour = new Uint32Array(146);
+numFour = numFour.fill(RED,0,21).fill(RED,42,84).fill(RED,126);
+
+var numFive = new Uint32Array(146);
+numFive = numFive.fill(RED,0,42).fill(RED,63,105).fill(RED,126);
+
+var numSix = new Uint32Array(146);
+numSix = numSix.fill(RED,0,42).fill(RED,63);
+
+var numSeven = new Uint32Array(146);
+numSeven = numSeven.fill(RED,21,84);
+
+var numEight = new Uint32Array(146);
+numEight = numEight.fill(RED);
+
+var numNine = new Uint32Array(146);
+numNine = numNine.fill(RED,0,84).fill(RED,126);
+
+var dots = new Uint32Array(18);
+dots = dots.fill(RED);
+
+var numArray = [numZero,numOne,numTwo,numThree,numFour,numFive,numSix,numSeven,numEight,numNine];
 
 
 // activeTimer definition:
@@ -153,8 +198,18 @@ practiceTimer.addEventListener('started', function (e) {
 
 // Update functions for timers
 function gameClockUpdate(){
+    
     sec = gameClock.getTimeValues().seconds;
     min = gameClock.getTimeValues().minutes;
+
+    min_2 = numArray[(min%10)];
+    min_1 = numArray[parseInt(min/10)];
+    sec_2 = numArray[(sec%10)];
+    sec_1 = numArray[parseInt(sec/10)];
+    //pixelData = Uint32Array.from([...min_1,...min_2,...dots,...sec_1,...sec_2]);
+
+    pixelData = Uint32Array.from([...sec_1,...sec_2,...dots,...sec_1,...sec_2]);
+    ledstrip.render(pixelData);
     IO.sockets.emit('gameClockUpdate', sec,min);
 }
 
