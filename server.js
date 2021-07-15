@@ -15,6 +15,7 @@ const EXPRESS   = require('express')     // include express module for serving u
 const HTTP      = require('http')        // include http module to set up express as an http server.
 var Timer       = require('easytimer.js').Timer;
 var ledstrip    = require('rpi-ws281x');
+const { Console } = require('console');
 
 // handle express init
 const HTTP_PORT = 80;
@@ -77,10 +78,6 @@ var numArray = [numZero,numOne,numTwo,numThree,numFour,numFive,numSix,numSeven,n
 // 1 = game clock shown
 // 2 = play clock shown
 // 3 = practice timer shown
-
-// may add later
-// 4 = clock shown
-
 var activeTimer = 0; // determines which clock is shown on board see above
 
 
@@ -114,6 +111,8 @@ IO.on('connection', function (socket) {
     gameClockUpdate();
     playClockUpdate();
     practiceTimerUpdate();
+    activeClockUpdate();
+
 
     // event lisnters for functions defined in the frontEnd.js
     // Handle game clock information
@@ -130,8 +129,23 @@ IO.on('connection', function (socket) {
         gameClock.start({startValues: {'minutes': min,'seconds': sec}});
         gameClock.pause();
     });
-    socket.on('setGameClockActive', function(){
-        activeTimer = 1;
+
+    socket.on('gameClockAdd', function(min,sec){
+        gameClock.pause();
+        currentMin = parseInt(gameClock.getTimeValues().minutes) + min;
+        currentSec = gameClock.getTimeValues().seconds + sec;
+
+        //gameClock.startValues = {'minutes': min,'seconds': sec};
+        //gameClock.start();
+        gameClock.stop();
+        gameClock.start({startValues: {'minutes': currentMin,'seconds': currentSec}});
+        gameClock.pause();
+
+    });
+
+    socket.on('setClockActive', function(selection){
+        activeTimer = selection;
+        activeClockUpdate();
     });
 
 
@@ -149,9 +163,6 @@ IO.on('connection', function (socket) {
         playClock.start({startValues:{'minutes' : min, 'seconds' : sec}});
         playClock.pause();
     });
-    socket.on('setPlayClockActive', function(){
-        activeTimer = 2;
-    });
 
     //Handle Practice Timer
     socket.on('practiceTimerStart', function(){
@@ -166,15 +177,6 @@ IO.on('connection', function (socket) {
         practiceTimer.reset();
         practiceTimer.pause();
         practiceTimerUpdate();
-    });
-    socket.on('setPracticeTimerActive', function(){
-        activeTimer = 3;
-    });
-
-    
-
-    socket.on('timersNotActive', function(){
-        activeTimer = 0;
     });
 });
 
@@ -198,33 +200,47 @@ practiceTimer.addEventListener('started', function (e) {
 
 // Update functions for timers
 function gameClockUpdate(){
-    
     sec = gameClock.getTimeValues().seconds;
     min = gameClock.getTimeValues().minutes;
-
-    min_2 = numArray[(min%10)];
-    min_1 = numArray[parseInt(min/10)];
-    sec_2 = numArray[(sec%10)];
-    sec_1 = numArray[parseInt(sec/10)];
-    //pixelData = Uint32Array.from([...min_1,...min_2,...dots,...sec_1,...sec_2]);
-
-    pixelData = Uint32Array.from([...sec_1,...sec_2,...dots,...sec_1,...sec_2]);
-    ledstrip.render(pixelData);
-    IO.sockets.emit('gameClockUpdate', sec,min);
+    if (activeTimer == 1){
+        showNum(min,sec);
+    }
+    IO.sockets.emit('gameClockUpdate',sec,min);
 }
 
 function playClockUpdate(){
     sec = playClock.getTimeValues().seconds;
     min = playClock.getTimeValues().minutes;
+    if (activeTimer == 2){
+        showNum(min,sec);
+    }
     IO.sockets.emit('playClockUpdate', sec,min);
 }
 
 function practiceTimerUpdate(){
     sec = practiceTimer.getTimeValues().seconds;
     min = practiceTimer.getTimeValues().minutes;
+    if (activeTimer == 3){
+        showNum(min,sec);
+    }    
     IO.sockets.emit('practiceTimerUpdate', sec,min);
 }
 
+function activeClockUpdate(){
+    IO.sockets.emit('clockSet', activeTimer);
+}
+
+function showNum(min,sec){
+    // lookup numbers from numArray table
+    min_2 = numArray[(min%10)];
+    min_1 = numArray[parseInt(min/10)];
+    sec_2 = numArray[(sec%10)];
+    sec_1 = numArray[parseInt(sec/10)];
+
+    //Fill in pixel Data Array
+    pixelData = Uint32Array.from([...min_1,...min_2,...dots,...sec_1,...sec_2]);
+    ledstrip.render(pixelData); //render number
+}
 
 
 // handle exit gracefully

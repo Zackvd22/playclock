@@ -22,6 +22,10 @@ function gameClockSet(sec, min){
     socket.emit('gameClockSet', parseInt(min), parseInt(sec));
 }
 
+function gameClockAdd(sec, min){
+    socket.emit('gameClockAdd', parseInt(min), parseInt(sec));
+}
+
 function submitCustomTime(){
     var min = document.getElementById("testMin").value;
     var sec = document.getElementById("testSec").value;
@@ -42,8 +46,10 @@ function submitCustomTime(){
 
     // send data to controller
     gameClockSet(sec, min);
-    console.log(min);
-    console.log(sec);
+}
+
+function setClockActive(selection){
+    socket.emit('setClockActive', selection);
 }
 
 // socket listner to update 
@@ -54,6 +60,7 @@ socket.on('gameClockUpdate', function(sec,min){
     var time = min.toString() + ':' + sec.toString();
     document.getElementById("gameClockTime").innerHTML = time;
 });
+
 
 
 
@@ -105,7 +112,32 @@ socket.on('practiceTimerUpdate', function(sec,min){
 });
 
 
-
+socket.on('clockSet', function(selection){
+    if(selection == 1)
+    {
+        document.getElementById("gameClockHeader").style.backgroundColor = '#4CAF50';
+        document.getElementById("playClockHeader").style.backgroundColor = 'white';
+        document.getElementById("practiceTimerHeader").style.backgroundColor = 'white';
+    }
+    else if (selection == 2) 
+    {
+        document.getElementById("gameClockHeader").style.backgroundColor = 'white';
+        document.getElementById("playClockHeader").style.backgroundColor = '#4CAF50';
+        document.getElementById("practiceTimerHeader").style.backgroundColor = 'white';        
+    } 
+    else if (selection == 3)
+    {
+        document.getElementById("gameClockHeader").style.backgroundColor = 'white';
+        document.getElementById("playClockHeader").style.backgroundColor = 'white';
+        document.getElementById("practiceTimerHeader").style.backgroundColor = '#4CAF50';  
+    }
+    else
+    {
+        document.getElementById("gameClockHeader").style.backgroundColor = 'white';
+        document.getElementById("playClockHeader").style.backgroundColor = 'white';
+        document.getElementById("practiceTimerHeader").style.backgroundColor = 'white';      
+    }
+});
 
 // helper function to change to the focus to the next object
 function moveOnMax(field,nextFieldID){
@@ -119,19 +151,3 @@ function moveOnMax(field,nextFieldID){
       
     }
 }
-
-
-
-
-
-
-/*
-// socket listner to update 
-socket.on('gameClockUpdate', function(sec,min){
-    if(sec < 10){
-        sec = '0' + sec.toString();
-    }
-    var time = min.toString() + ':' + sec.toString();
-    document.getElementById("gameClockTime").innerHTML = time;
-});
-*/

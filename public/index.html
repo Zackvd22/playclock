@@ -20,44 +20,50 @@ and open the template in the editor.
             <img src="/img/header.jpg">     
         </header>
 
-        <div id="clockHeader">Game Clock:</div>
+        <div class="clockHeader" id="gameClockHeader" onclick="setClockActive(1)">Game Clock:
+            <span id="gameClockTime"></span>
+
+        </div>
         <table id="clockTable">
             <colgroup id="clockCol">
                 <col>
                 <col>
-                <col>
             </colgroup>
-            <tr>
-                <td><span id="gameClockTime"></span></td>
-                <td><button class="startButton" id="gameClockStart" onclick="gameClockStart()">Start</button></td>
-                <td><button class="stopButton" id="gameClockStop" onclick="gameClockPause()">Pause</button></td>
 
+            <tr>
+                <td><button class="startButton" id="gameClockStart" onclick="gameClockStart()">Start</button></td>
+                <td><button class="stopButton" id="gameClockStop" onclick="gameClockPause()">Pause</button></td> 
             </tr>
+
+            <tr>
+                <td><button class="timeButton" id="testSubmit" onclick="gameClockSet(0,10)">10:00</button></td>
+                <td><button class="timeButton" id="add5Min" onclick="gameClockAdd(0,5)">+5:00</button></td>
+            </tr>
+
             <tr>
                 <td>
                     <input class="timeInput" type="text" id="testMin" inputmode="numeric" pattern="\d+" maxlength="2" onClick="this.select()" onkeyup="moveOnMax(this,'testSec')">:<input type="text" id="testSec" inputmode="numeric" pattern="\d+" maxlength="2" onClick="this.select()" onkeyup="moveOnMax(this,'testSubmit')">
+                    <td><button class="timeButton" id="testSubmit" onclick="submitCustomTime()">Submit</button></td>
                 </td>
-                <td><button class="timeButton" id="testSubmit" onclick="submitCustomTime()">Submit</button></td>
-                <td><button class="timeButton" id="testSubmit" onclick="gameClockSet(0,10)">10:00</button></td>
             </tr>
+
         </table>
         <br>
 
-        <div id="clockHeader">Play Clock:</div>
+        <div class="clockHeader" id="playClockHeader" onclick="setClockActive(2)">Play Clock:
+            <span id="playClockTime"></span>
+        </div>
         <table id="clockTable">
             <colgroup id="clockCol">
                 <col>
                 <col>
-                <col>
             </colgroup>
             <tr>
-                <td><span id="playClockTime"></span></td>
                 <td><button class="startButton" id="playClockStart" onclick="playClockStart()">Start</button></td>
                 <td><button class="stopButton" id="playClockStop" onclick="playClockPause()">Pause</button></td>
-
             </tr>
+
             <tr>
-                <td></td>
                 <td><button class="timeButton" id="playClockSet40" onclick="playClockSet(40,0)">40</button></td>
                 <td><button class="timeButton" id="playClockSet25" onclick="playClockSet(25,0)">25</button></td>
             </tr>
@@ -65,23 +71,21 @@ and open the template in the editor.
 
         <br>
 
-        <div id="clockHeader">Practice Timer:</div>
+        <div class="clockHeader" id="practiceTimerHeader" onclick="setClockActive(3)">Practice Timer:
+            <span id="practiceTimer"></span>
+        </div>
         <table id="clockTable">
             <colgroup id="clockCol">
                 <col>
                 <col>
-                <col>
             </colgroup>
             <tr>
-                <td><span id="practiceTimer"></span></td>
                 <td><button class="startButton" id="practiceTimerStart" onclick="practiceTimerStart()">Start</button></td>
                 <td><button class="stopButton" id="practiceTimerStop" onclick="practiceTimerPause()">Pause</button></td>
 
             </tr>
             <tr>
-                <td></td>
                 <td><button class="resetButton" id="practiceTimerReset" onclick="practiceTimerReset()">Reset</button></td>
-                <td></td>
             </tr>
         </table>
 
