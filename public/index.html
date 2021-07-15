@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Playclock</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="main.css" rel="stylesheet" type="text/css"/>
+        <link rel="icon" type="image/png" href="/img/favicon.png"/>
+        <script src="/socket.io/socket.io.js"></script>
+        
+    </head>
+    
+    <body class="body">
+        <header class="mainHeader">
+            <img src="/img/header.jpg">     
+        </header>
+
+        <div class="clockHeader" id="gameClockHeader" onclick="setClockActive(1)">Game Clock:
+            <span id="gameClockTime"></span>
+
+        </div>
+        <table id="clockTable">
+            <colgroup id="clockCol">
+                <col>
+                <col>
+            </colgroup>
+
+            <tr>
+                <td><button class="startButton" id="gameClockStart" onclick="gameClockStart()">Start</button></td>
+                <td><button class="stopButton" id="gameClockStop" onclick="gameClockPause()">Pause</button></td> 
+            </tr>
+
+            <tr>
+                <td><button class="timeButton" id="testSubmit" onclick="gameClockSet(0,10)">10:00</button></td>
+                <td><button class="timeButton" id="add5Min" onclick="gameClockAdd(0,5)">+5:00</button></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input class="timeInput" type="text" id="testMin" inputmode="numeric" pattern="\d+" maxlength="2" onClick="this.select()" onkeyup="moveOnMax(this,'testSec')">:<input type="text" id="testSec" inputmode="numeric" pattern="\d+" maxlength="2" onClick="this.select()" onkeyup="moveOnMax(this,'testSubmit')">
+                    <td><button class="timeButton" id="testSubmit" onclick="submitCustomTime()">Submit</button></td>
+                </td>
+            </tr>
+
+        </table>
+        <br>
+
+        <div class="clockHeader" id="playClockHeader" onclick="setClockActive(2)">Play Clock:
+            <span id="playClockTime"></span>
+        </div>
+        <table id="clockTable">
+            <colgroup id="clockCol">
+                <col>
+                <col>
+            </colgroup>
+            <tr>
+                <td><button class="startButton" id="playClockStart" onclick="playClockStart()">Start</button></td>
+                <td><button class="stopButton" id="playClockStop" onclick="playClockPause()">Pause</button></td>
+            </tr>
+
+            <tr>
+                <td><button class="timeButton" id="playClockSet40" onclick="playClockSet(40,0)">40</button></td>
+                <td><button class="timeButton" id="playClockSet25" onclick="playClockSet(25,0)">25</button></td>
+            </tr>
+        </table>
+
+        <br>
+
+        <div class="clockHeader" id="practiceTimerHeader" onclick="setClockActive(3)">Practice Timer:
+            <span id="practiceTimer"></span>
+        </div>
+        <table id="clockTable">
+            <colgroup id="clockCol">
+                <col>
+                <col>
+            </colgroup>
+            <tr>
+                <td><button class="startButton" id="practiceTimerStart" onclick="practiceTimerStart()">Start</button></td>
+                <td><button class="stopButton" id="practiceTimerStop" onclick="practiceTimerPause()">Pause</button></td>
+
+            </tr>
+            <tr>
+                <td><button class="resetButton" id="practiceTimerReset" onclick="practiceTimerReset()">Reset</button></td>
+            </tr>
+        </table>
+
+    </body>
+    <footer>
+        <script src="frontEnd.js" type="text/javascript"></script>
+    </footer>
+</html>
