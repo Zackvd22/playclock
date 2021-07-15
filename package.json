@@ -1,0 +1,29 @@
+{
+  "name": "playclock",
+  "version": "1.0.0",
+  "description": "multifunctional playclock that uses a web interface to control ws2812b LEDs arranged as a seven segment display.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zackvd22/playclock.git"
+  },
+  "author": "Zackvd22",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zackvd22/playclock/issues"
+  },
+  "homepage": "https://github.com/Zackvd22/playclock#readme",
+  "keywords": [
+    "playclock"
+  ],
+  "dependencies": {
+    "easytimer.js": "^4.4.0",
+    "express": "^4.17.1",
+    "rpi-ws281x": "^1.0.36",
+    "socket.io": "^4.1.3"
+  }
+}
